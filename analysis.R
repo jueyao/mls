@@ -1,6 +1,6 @@
 library(purrr)
 
-
+### data processing ###
 df <- read.csv("mls-salaries-2017.csv")
 # remove second listed position
 df$position <- as.vector(map(strsplit(as.character(df$position), "-"), 1))
@@ -8,8 +8,9 @@ df$position <- as.vector(map(strsplit(as.character(df$position), "/"), 1))
 # remove outliers (9 highest earners)
 df <- df[-tail(order(df$guaranteed_compensation), 9),]
 
+plot(df$base_salary, df$guaranteed_compensation)
 
-
+### position and salary ###
 x <- df[df$position == "F", "base_salary"]
 y <- df[df$position == "D", "base_salary"]
 
@@ -30,9 +31,3 @@ permutation_y_samples <- permutation_samples[,(n_x+1):(n_x+n_y)]
 t_hats <- abs(apply(permutation_x_samples, 1, mean) - apply(permutation_y_samples, 1, mean))
 k <- sum(t_hats > t)
 p_value_est <- (k+1)/(m+1)
-
-
-### 
-
-
-
